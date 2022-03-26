@@ -41,7 +41,7 @@ func main() {
 	v1 := r.Group("/v1")
 	{
 		// Get IPs for scan functionality
-		v1.GET("/ips", func(c *gin.Context) {
+		v1.GET("/scanIps", func(c *gin.Context) {
 			ipString := c.Query("ip")
 			ip := net.ParseIP(ipString).To4()
 			if ip == nil {
@@ -61,7 +61,7 @@ func main() {
 		})
 
 		// Get ARP Layer for ARP spoof function in NS
-		v1.POST("/packet", func(c *gin.Context) {
+		v1.POST("/createPacket", func(c *gin.Context) {
 			var req ARPLayerRequest
 			if err := c.ShouldBindJSON(&req); err != nil {
 				log.Println(err)
