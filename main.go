@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net"
@@ -19,17 +17,17 @@ type ARPLayerRequest struct {
 }
 
 func main() {
-	testMAC, _ := net.ParseMAC("00:00:5e:00:53:01")
-	testIP := net.ParseIP("192.0.2.1")
-	testdata := ARPLayerRequest{
-		SrcMAC:    testMAC,
-		SrcIP:     testIP,
-		DstMAC:    testMAC,
-		DstIP:     testIP,
-		ArpOpcode: 2,
-	}
-	testdataJson, _ := json.Marshal(testdata)
-	fmt.Printf("\nTestdata: %+v\n", string(testdataJson))
+	//testMAC, _ := net.ParseMAC("00:00:5e:00:53:01")
+	//testIP := net.ParseIP("192.0.2.1")
+	//testdata := ARPLayerRequest{
+	//	SrcMAC:    testMAC,
+	//	SrcIP:     testIP,
+	//	DstMAC:    testMAC,
+	//	DstIP:     testIP,
+	//	ArpOpcode: 2,
+	//}
+	//testdataJson, _ := json.Marshal(testdata)
+	//fmt.Printf("\nTestdata: %+v\n", string(testdataJson))
 
 	// Init Gin
 	r := gin.Default()
@@ -68,7 +66,7 @@ func main() {
 				c.AbortWithStatus(http.StatusBadRequest)
 				return
 			}
-			log.Printf("Received json: %v", c.Request.Body)
+			//log.Printf("Received json: %v", c.Request.Body)
 
 			packet := networking.CreatePacket(req.SrcMAC, req.SrcIP, req.DstMAC, req.DstIP, req.ArpOpcode)
 			// fmt.Printf("packet: %v \n", packet)
@@ -79,5 +77,8 @@ func main() {
 		})
 	}
 
-	r.Run() // listen and serve on 0.0.0.0:8080
+	err := r.Run()
+	if err != nil {
+		log.Println(err)
+	} // listen and serve on 0.0.0.0:8080
 }
